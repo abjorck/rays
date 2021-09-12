@@ -1,4 +1,3 @@
-use std::ops::{Sub, Index, Div, Neg};
 use std::fmt::{Formatter, Display};
 
 /// 3 dimensional f32 Vector, with some convenience math functions

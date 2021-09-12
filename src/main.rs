@@ -1,14 +1,14 @@
-mod vec3;
-mod ray;
-mod hit;
+use minpixwin::Screen;
 
 use vec3::Color;
 
-use std::cell::{RefCell, Ref};
-use crate::vec3::{Point, Vec3, Pixel};
+use crate::hit::{HitRecord, Hittable, Sphere};
 use crate::ray::Ray;
-use crate::hit::{Sphere, Hittable, HitRecord};
-use minpixwin::Screen;
+use crate::vec3::{Pixel, Point, Vec3};
+
+mod vec3;
+mod ray;
+mod hit;
 
 fn main() {
     const ASPECT_RATIO: f32 = 16.0 / 9.0;
@@ -44,8 +44,7 @@ fn main() {
                 origin: origin,
                 direction: lower_left_corner + u * horizontal + v * vertical,
             };
-            let mut hitcolor = None;
-            hitcolor = ray_color(&r, &hittables);
+            let hitcolor = ray_color(&r, &hittables);
 
             p[i + W * j] = hitcolor.unwrap_or_else(|| bg_color(&r));
         }
@@ -102,14 +101,13 @@ fn ray_color(r: &Ray, hittables: &Vec<Box<dyn Hittable>>) -> Option<Color> {
 //blue gradient
 fn bg_color(r: &Ray) -> Color {
     let unit_direction = r.direction.unit_vector();
-    let len = r.direction.length_squared();
     let t = 0.5 * (unit_direction.y() + 1.0);
     (1.0 - t) * Color::new(1.0, 1.0, 1.0) + t * Color::new(0.5, 0.7, 1.0)
 }
 
 
 
-struct Image {
+pub struct Image {
     w: u32,
     h: u32,
     pixels: Vec<Pixel>,
@@ -117,7 +115,7 @@ struct Image {
 
 impl Image {
     /// render as a simple image format, to view result in some image viewer
-    fn print_ppm(&self) {
+    pub fn print_ppm(&self) {
         println!("P3");
         println!("{} {}", self.w, self.h);
         println!("255");
