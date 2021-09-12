@@ -1,12 +1,12 @@
-use crate::vec3::{Vec3, Point, Color};
+use crate::vec3::{Vec3, Point};
 
 pub struct Ray {
-    pub orig: Point,
-    pub dir: Vec3
+    pub origin: Point,
+    pub direction: Vec3
 }
 
 impl Ray {
-    pub fn at(self, t: f32) -> Point {
-        self.orig + t*self.dir
+    pub fn at(&self, t: f32) -> Point {
+        self.origin + t*self.direction
     }
 }
